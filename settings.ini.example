@@ -1,0 +1,14 @@
+[settings]
+DEBUG=True
+SECRET_KEY=<django_secret_key>
+
+EMAIL_HOST_USER=<some-email@gmail.com>
+EMAIL_HOST_PASSWORD=<email_password>
+EMAIL_PORT=587
+DEFAULT_FROM_EMAIL=TankControl <noreply@tank.control.com>
+
+PROJECT_NAME=TankControl
+
+DB_NAME=tank_control
+DB_USER=<db_password>
+DB_PASSWORD=<db_password>
