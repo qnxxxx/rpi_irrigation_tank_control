@@ -1,0 +1,48 @@
+1. Timestamps problem - correct local time on send, utc on refresh. Suspecting postgresql settings!
+
+
+2. Profile picture issues:
+    - new profile pictures don't overwrite old ones
+    - if picture is missing from profile folder load dummy_image.
+
+
+3. Check why pycharm throws "Unresolved template reference" for static files.
+
+
+4. CREATE AUTOMATION APP ~60%
+
+
+5. CREATE MANUAL OPERATION APP ~10%
+
+
+6. Add ssl certificate to production server:
+    - generate cert for local domain
+    - add to /etc/nginx/sites-available/Tank control:
+
+            listen 443 ssl; # managed by Certbot
+            ssl_certificate /etc/letsencrypt/live/tankapp.local/fullchain.pem; # managed by Certbot
+            ssl_certificate_key /etc/letsencrypt/live/tankapp.local/privkey.pem; # managed by Certbot
+            include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
+            ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; managed by Certbot
+
+        server {
+            if ($host = www.tankapp.local) {
+                return 301 https://$host$request_uri;
+            } # managed by Certbot
+
+            if ($host = tankapp.local) {
+                return 301 https://$host$request_uri;
+            } # managed by Certbot
+        }
+
+    - add to /etc/systemd/system/daphne.service:
+
+        ExecStart=/home/tank/TankControl/tank/bin/python /home/tank/TankControl/tank/bin/daphne -e ssl:8001:privateKey=
+        /etc/letsencrypt/live/tankapp.local/privkey.pem:certKey=/etc/letsencrypt/live/tankapp.local/fullchain.pem
+        TankControl.asgi:application
+
+
+7. Remove django-extensions at project completion.
+
+
+8. Clicking on notification asks for credentials

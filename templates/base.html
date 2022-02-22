@@ -1,0 +1,108 @@
+{% load static %}
+
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!-- Googleapis Material Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Material+Icons" rel="stylesheet">
+    <!-- Bootsrtap CSS -->
+    <link rel="stylesheet" href="{% static 'bootstrap-4.6.1/css/bootstrap.min.css' %}">
+    <!-- Bootstrap4-toggle CSS -->
+    <link href="{% static 'bootstrap4-toggle-3.6.1/css/bootstrap4-toggle.min.css' %}" rel="stylesheet">
+    <!-- Cropperjs CSS -->
+    <link rel="stylesheet" href="{% static 'cropperjs/dist/cropper.min.css' %}">
+
+    <link rel='stylesheet' href="{% static 'mdl/material.min.css' %}">
+
+    <!-- Markdown-it -->
+    <script src="{% static 'markdown-it/dist/markdown-it.min.js' %}"></script>
+    <link rel="stylesheet" href="{% static '/highlight/styles/default.min.css' %}"/>
+    <script src="{% static 'highlight/highlight.min.js' %}"></script>
+    <script src="{% static 'highlight/languages/kotlin.min.js' %}"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+
+    <!-- FOR REVIEW
+    highlight kotlin script ?!?!?!?
+     END FOR REVIEW -->
+
+    <title>IRRIGATION TANK CONTROL</title>
+</head>
+
+<!-- BODY -->
+<body>
+
+{% include 'snippets/base_css.html' %}
+{% include 'snippets/base_js.html' %}
+{% include 'snippets/header.html' %}
+
+    <!-- Loading Spinner -->
+    <div class="container" id="id_loading_spinner" style="display: none">
+        <div class="d-flex flex-row mx-auto flex-grow-1 justify-content-center">
+            <div class="spinner-border text-primary" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- CONTENT -->
+    <div class="main d-flex card-deck">
+        {% block content %}
+
+        {% endblock content %}
+    </div>
+
+    <!-- SCRIPTS (I: the order is important!) -->
+    <!-- Jquery -->
+    <script src="{% static 'jquery/jquery-3.6.0.js' %}"></script>
+    <!-- Bootsrtap -->
+    <script src="{% static 'bootstrap-4.6.1/js/bootstrap.bundle.min.js' %}"></script>
+    <!-- Bootstrap4-toggle CSS -->
+    <script src="{% static 'bootstrap4-toggle-3.6.1/js/bootstrap4-toggle.min.js' %}"></script>
+    <!-- Cropperjs -->
+    <script type="module" src="{% static 'cropperjs/dist/cropper.min.js' %}"></script>
+
+    <script src="{% static 'mdl/material.min.js' %}"></script>
+
+    <!-- Loading spinner script -->
+    <script type="text/javascript">
+        function displayLoadingSpinner(isDisplayed) {
+            let spinner = document.getElementById("id_loading_spinner")
+            if(isDisplayed) {
+                spinner.style.display = "block"
+            } else {
+                spinner.style.display = 'none'
+            }
+        }
+    </script>
+
+    <!-- !!! Auto/Manual toggle script !!! -->
+    <script type="text/javascript">
+        $(function() {
+            $('#mode-toggle').change(function() {
+                if ($(this).prop('checked') === false) {
+                    $('#warningModal').modal({
+                        backdrop: 'static',
+                        keyboard: false
+                    });
+                    $('#btn-no').on('click', function() {
+                        $('#mode-toggle').bootstrapToggle('on');
+                    })
+                }
+            });
+        });
+    </script>
+    <!-- End SCRIPTS -->
+
+</body>
+<!-- End BODY -->
+
+<!-- FOOTER -->
+{% include 'snippets/footer.html' %}
+
+</html>
