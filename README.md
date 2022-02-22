@@ -3,7 +3,7 @@ Realtime irrigation tank control system on RaspberryPi, created with Django + Ch
 Features:
   1. Automatic and manual modes of operation.
   2. Realtime gauge for the water's level and quantity in the tank.
-  3. Water history graph.
+  3. Water level history graph.
   4. Control panel with realtime pumps/valves relay control and feedback.
   5. Authentication system defining user roles (viewers, operators and administrators).
   6. Chat system for communication between users.
@@ -33,6 +33,6 @@ Software:
   6. Daphne
   7. Redis
 
-Chat system with small modifications from here: https://github.com/mitchtabian/Codingwithmitch-Chat
+Chat system adapted from here: https://github.com/mitchtabian/Codingwithmitch-Chat
 
 Current State ~45% Ready.
