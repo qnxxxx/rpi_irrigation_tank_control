@@ -9,10 +9,10 @@
 3. Check why pycharm throws "Unresolved template reference" for static files.
 
 
-4. CREATE AUTOMATION APP ~60%
+4. CREATE tank_level APP ~60%
 
 
-5. CREATE MANUAL OPERATION APP ~10%
+5. CREATE relay_control APP ~10%
 
 
 6. Add ssl certificate to production server:
@@ -43,6 +43,3 @@
 
 
 7. Remove django-extensions at project completion.
-
-
-8. Clicking on notification asks for credentials
