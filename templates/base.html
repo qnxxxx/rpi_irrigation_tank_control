@@ -85,16 +85,35 @@
 
     <!-- !!! Auto/Manual toggle script !!! -->
     <script type="text/javascript">
+        let modeToggleState = document.getElementById('mode-toggle').checked
+
+        if (modeToggleState === true) {
+            $('#pump-toggle').bootstrapToggle('disable');
+            $('#mains-toggle').bootstrapToggle('disable');
+            $('#byp-toggle').bootstrapToggle('disable');
+        }
+
         $(function() {
             $('#mode-toggle').change(function() {
-                if ($(this).prop('checked') === false) {
+                modeToggleState = $(this).prop('checked');
+                // console.log(modeToggleState);
+                if (modeToggleState === false) {
                     $('#warningModal').modal({
                         backdrop: 'static',
                         keyboard: false
                     });
                     $('#btn-no').on('click', function() {
                         $('#mode-toggle').bootstrapToggle('on');
-                    })
+                    });
+                    $('#btn-yes').on('click', function() {
+                        $('#pump-toggle').bootstrapToggle('enable');
+                        $('#mains-toggle').bootstrapToggle('enable');
+                        $('#byp-toggle').bootstrapToggle('enable');
+                    });
+                } else {
+                    $('#pump-toggle').bootstrapToggle('disable');
+                    $('#mains-toggle').bootstrapToggle('disable');
+                    $('#byp-toggle').bootstrapToggle('disable');
                 }
             });
         });

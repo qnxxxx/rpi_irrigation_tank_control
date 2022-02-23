@@ -6,7 +6,7 @@
     - if picture is missing from profile folder load dummy_image.
 
 
-3. Check why pycharm throws "Unresolved template reference" for static files.
+3. Sockets error in account template.
 
 
 4. CREATE tank_level APP ~60%

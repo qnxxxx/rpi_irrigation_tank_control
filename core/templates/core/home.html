@@ -3,13 +3,28 @@
 {% block content %}
 
 
+<!-- REGULAR SCREENS -->
 <div class="row justify-content-end">
-        {% include 'relay_control/relay_control.html' %}
+    {% include 'relay_control/relay_control.html' %}
 
-        {% include 'water_level/water_level_widget.html' %}
+    {% include 'water_level/water_level_widget.html' %}
 
-        {% include 'public_chat/snippets/public_chat_room.html' with room_id=room_id %}
+    {% include 'public_chat/snippets/public_chat_room.html' with room_id=room_id %}
 </div>
+<!-- END REGULAR SCREENS -->
+
+<!-- TODO: MOBILE SCREENS -->
+<div class="main d-flex d-md-none flex-column p-2">
+    {% include 'water_level/water_level_widget.html' %}
+
+    {% include 'water_level/water_level_widget.html' %}
+
+    {% include 'public_chat/snippets/public_chat_room.html' with room_id=room_id %}
+
+    <!-- TODO: one day -->
+    <!-- <p>This site is not meant to be viewed on a mobile device. Please download the <a href="#">app</a>.</p> -->
+</div>
+<!-- END MOBILE SCREENS -->
 
 
 {% endblock content %}
