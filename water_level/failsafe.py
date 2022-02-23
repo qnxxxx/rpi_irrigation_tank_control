@@ -1,7 +1,7 @@
 import RPi.GPIO as GPIO
 
 from asgiref.sync import sync_to_async
-from tank_level.get_sonar_settings import FAILSAFE_PIN
+from water_level.get_sonar_settings import FAILSAFE_PIN
 
 
 @sync_to_async

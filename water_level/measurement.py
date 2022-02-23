@@ -5,9 +5,9 @@ import math
 
 import RPi.GPIO as GPIO
 
-from tank_level.get_sonar_settings import TRIGGER_PIN, ECHO_PIN, FAILSAFE_PIN
-from tank_level.get_measurement_settings import SAMPLE_SIZE, SAMPLE_WAIT, TEMPERATURE
-from tank_level.get_tank_size import LENGTH, WIDTH, DEPTH
+from water_level.get_sonar_settings import TRIGGER_PIN, ECHO_PIN, FAILSAFE_PIN
+from water_level.get_measurement_settings import SAMPLE_SIZE, SAMPLE_WAIT, TEMPERATURE
+from water_level.get_tank_size import LENGTH, WIDTH, DEPTH
 
 
 class Measurement:

@@ -3,9 +3,9 @@ from django.utils import timezone
 from asgiref.sync import asyncio
 
 from helpers.timestamp import calculate_timestamp
-from tank_level.measurement import Measurement
-from tank_level.failsafe import failsafe_status
-from tank_level.models import WaterLevel
+from water_level.measurement import Measurement
+from water_level.failsafe import failsafe_status
+from water_level.models import WaterLevel
 
 
 async def measurement_db_entry():

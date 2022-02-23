@@ -1,4 +1,4 @@
-from tank_level.models import TankSize
+from water_level.models import TankSize
 
 
 # Reads tank size from db

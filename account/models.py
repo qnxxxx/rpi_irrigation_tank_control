@@ -72,8 +72,3 @@ class Account(AbstractBaseUser):
     # Does this user have permission to view this app? (ALWAYS YES FOR SIMPLICITY)
     def has_module_perms(self, app_label):
         return True
-
-
-@receiver(post_save, sender=Account)
-def user_save(sender, instance, **kwargs):
-    FriendList.objects.get_or_create(user=instance)

@@ -2,31 +2,12 @@
 
 {% block content %}
 
-<div class="container">
-    <!-- REGULAR SCREENS -->
-	<div class="main d-none d-md-flex align-items-stretch justify-content-center">
-        <div class="row">
-            <div class="col">
-                {% include 'tank_level/tank_level_widget.html' %}
-            </div>
 
-            <div class="col">
-                {% include 'public_chat/snippets/public_chat_room.html' with room_id=room_id %}
-            </div>
-        </div>
-    </div>
-	<!-- END REGULAR SCREENS -->
+<div class="row justify-content-end">
+    {% include 'water_level/water_level_widget.html' %}
 
-	<!-- MOBILE SCREENS -->
-	<div class="main d-flex d-md-none flex-column p-2">
-        {% include 'tank_level/tank_level_widget.html' %}
-
-        {% include 'public_chat/snippets/public_chat_room.html' with room_id=room_id %}
-
-        <!-- TODO one day -->
-        <!-- <p>This site is not meant to be viewed on a mobile device. Please download the <a href="#">app</a>.</p> -->
-	</div>
-	<!-- END MOBILE SCREENS -->
+    {% include 'public_chat/snippets/public_chat_room.html' with room_id=room_id %}
 </div>
+
 
 {% endblock content %}

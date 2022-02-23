@@ -51,10 +51,12 @@
     </div>
 
     <!-- CONTENT -->
-    <div class="main d-flex card-deck">
-        {% block content %}
+    <div class="main">
+        <div class="container-fluid">
+            {% block content %}
 
-        {% endblock content %}
+            {% endblock content %}
+        </div>
     </div>
 
     <!-- SCRIPTS (I: the order is important!) -->

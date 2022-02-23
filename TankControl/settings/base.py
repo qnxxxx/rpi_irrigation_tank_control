@@ -45,10 +45,7 @@ INSTALLED_APPS = [
     'core',
     'notification',
     'public_chat',
-    'tank_level',
-
-    # For testing purposes only
-    'test_app',
+    'water_level',
 
     # Third party apps
     'channels',

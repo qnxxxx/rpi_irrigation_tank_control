@@ -1,4 +1,4 @@
-from tank_level.models import SonarPinout
+from water_level.models import SonarPinout
 
 
 # Reads settings for the sonar sensor from db

@@ -1,4 +1,4 @@
-from tank_level.models import SampleMeasurementSettings
+from water_level.models import SampleMeasurementSettings
 
 
 # Reads settings for the measurement

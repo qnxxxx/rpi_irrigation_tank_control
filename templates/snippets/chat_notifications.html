@@ -139,7 +139,7 @@
             let div = document.createElement("div")
             div.classList.add("chat-dropdown-header", "d-flex", "flex-row", "justify-content-end", "m-auto", "align-items-end")
             div.addEventListener("click", function (e) {
-                let url = "{% url 'chat:private-chat-room' %}"
+                {#let url = "{% url 'chat:private-chat-room' %}"#}
                 chatRedirect(url)
             })
 

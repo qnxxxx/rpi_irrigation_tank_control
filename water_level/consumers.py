@@ -5,8 +5,8 @@
 #
 # import json
 #
-# from tank_level.measurement import Measurement
-# from tank_level.models import SonarSettings, MeasurementSettings, TankLevel
+# from water_level.measurement import Measurement
+# from water_level.models import SonarSettings, MeasurementSettings, TankLevel
 # from chat.exceptions import ClientError
 # from helpers.timestamp import calculate_timestamp
 #

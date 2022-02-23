@@ -56,22 +56,22 @@ class NotificationConsumer(AsyncJsonWebsocketConsumer):
                 if payload is not None:
                     payload = json.loads(payload)
                     await self.send_new_general_notifications_payload(payload['notifications'])
-            elif command == 'accept_friend_request':
-                notification_id = content['notification_id']
-                payload = await accept_friend_request(self.scope['user'], notification_id)
-                if payload is None:
-                    raise ClientError('UNKNOWN_ERROR', 'Something went wrong. Try refreshing the browser.')
-                else:
-                    payload = json.loads(payload)
-                    await self.send_updated_friend_request_notification(payload['notification'])
-            elif command == "decline_friend_request":
-                notification_id = content['notification_id']
-                payload = await decline_friend_request(self.scope['user'], notification_id)
-                if payload is None:
-                    raise ClientError('UNKNOWN_ERROR', 'Something went wrong. Try refreshing the browser.')
-                else:
-                    payload = json.loads(payload)
-                    await self.send_updated_friend_request_notification(payload['notification'])
+            # elif command == 'accept_friend_request':
+            #     notification_id = content['notification_id']
+            #     payload = await accept_friend_request(self.scope['user'], notification_id)
+            #     if payload is None:
+            #         raise ClientError('UNKNOWN_ERROR', 'Something went wrong. Try refreshing the browser.')
+            #     else:
+            #         payload = json.loads(payload)
+            #         await self.send_updated_friend_request_notification(payload['notification'])
+            # elif command == "decline_friend_request":
+            #     notification_id = content['notification_id']
+            #     payload = await decline_friend_request(self.scope['user'], notification_id)
+            #     if payload is None:
+            #         raise ClientError('UNKNOWN_ERROR', 'Something went wrong. Try refreshing the browser.')
+            #     else:
+            #         payload = json.loads(payload)
+            #         await self.send_updated_friend_request_notification(payload['notification'])
             elif command == 'refresh_general_notifications':
                 payload = await refresh_general_notifications(self.scope['user'], content['oldest_timestamp'],
                                                               content['newest_timestamp'])
@@ -135,19 +135,19 @@ class NotificationConsumer(AsyncJsonWebsocketConsumer):
             },
         )
 
-    async def send_updated_friend_request_notification(self, notification):
-        """
-        After a friend request is accepted or declined, send the updated notification to template
-        payload contains 'notification' and 'response':
-            1. payload['notification']
-            2. payload['response']
-        """
-        await self.send_json(
-            {
-                'general_msg_type': GENERAL_MSG_TYPE_UPDATED_NOTIFICATION,
-                'notification': notification,
-            },
-        )
+    # async def send_updated_friend_request_notification(self, notification):
+    #     """
+    #     After a friend request is accepted or declined, send the updated notification to template
+    #     payload contains 'notification' and 'response':
+    #         1. payload['notification']
+    #         2. payload['response']
+    #     """
+    #     await self.send_json(
+    #         {
+    #             'general_msg_type': GENERAL_MSG_TYPE_UPDATED_NOTIFICATION,
+    #             'notification': notification,
+    #         },
+    #     )
 
     async def general_pagination_exhausted(self):
         """
@@ -251,11 +251,10 @@ def get_general_notifications(user, page_number):
         2. FriendList
     """
     if user.is_authenticated:
-        friend_request_ct = ContentType.objects.get_for_model(FriendRequest)
-        friend_list_ct = ContentType.objects.get_for_model(FriendList)
-        notifications = Notification.objects.filter(target=user,
-                                                    content_type__in=[friend_request_ct, friend_list_ct]).order_by(
-            '-timestamp')
+        # friend_request_ct = ContentType.objects.get_for_model(FriendRequest)
+        # friend_list_ct = ContentType.objects.get_for_model(FriendList)
+        notifications = ''  # Notification.objects.filter(target=user,
+        # content_type__in=[friend_request_ct, friend_list_ct]).order_by('-timestamp')
         p = Paginator(notifications, DEFAULT_NOTIFICATION_PAGE_SIZE)
 
         payload = {}
@@ -274,52 +273,52 @@ def get_general_notifications(user, page_number):
     return json.dumps(payload)
 
 
-@database_sync_to_async
-def accept_friend_request(user, notification_id):
-    """
-    Accept a friend request
-    """
-    payload = {}
-    if user.is_authenticated:
-        try:
-            notification = Notification.objects.get(pk=notification_id)
-            friend_request = notification.content_object
-            # confirm this is the correct user
-            if friend_request.receiver == user:
-                # accept the request and get the updated notification
-                updated_notification = friend_request.accept()
+# @database_sync_to_async
+# def accept_friend_request(user, notification_id):
+#     """
+#     Accept a friend request
+#     """
+#     payload = {}
+#     if user.is_authenticated:
+#         try:
+#             notification = Notification.objects.get(pk=notification_id)
+#             friend_request = notification.content_object
+#             # confirm this is the correct user
+#             if friend_request.receiver == user:
+#                 # accept the request and get the updated notification
+#                 updated_notification = friend_request.accept()
+#
+#                 # return the notification associated with this FriendRequest
+#                 s = LazyNotificationEncoder()
+#                 payload['notification'] = s.serialize([updated_notification])[0]
+#                 return json.dumps(payload)
+#         except Notification.DoesNotExist:
+#             raise ClientError('AUTH_ERROR', 'An error occurred with that notification. Try refreshing the browser.')
+#     return None
 
-                # return the notification associated with this FriendRequest
-                s = LazyNotificationEncoder()
-                payload['notification'] = s.serialize([updated_notification])[0]
-                return json.dumps(payload)
-        except Notification.DoesNotExist:
-            raise ClientError('AUTH_ERROR', 'An error occurred with that notification. Try refreshing the browser.')
-    return None
 
-
-@database_sync_to_async
-def decline_friend_request(user, notification_id):
-    """
-    Decline a friend request
-    """
-    payload = {}
-    if user.is_authenticated:
-        try:
-            notification = Notification.objects.get(pk=notification_id)
-            friend_request = notification.content_object
-            # confirm this is the correct user
-            if friend_request.receiver == user:
-                # accept the request and get the updated notification
-                updated_notification = friend_request.decline()
-
-                # return the notification associated with this FriendRequest
-                s = LazyNotificationEncoder()
-                payload['notification'] = s.serialize([updated_notification])[0]
-                return json.dumps(payload)
-        except Notification.DoesNotExist:
-            raise ClientError('AUTH_ERROR', 'An error occurred with that notification. Try refreshing the browser.')
-    return None
+# @database_sync_to_async
+# def decline_friend_request(user, notification_id):
+#     """
+#     Decline a friend request
+#     """
+#     payload = {}
+#     if user.is_authenticated:
+#         try:
+#             notification = Notification.objects.get(pk=notification_id)
+#             friend_request = notification.content_object
+#             # confirm this is the correct user
+#             if friend_request.receiver == user:
+#                 # accept the request and get the updated notification
+#                 updated_notification = friend_request.decline()
+#
+#                 # return the notification associated with this FriendRequest
+#                 s = LazyNotificationEncoder()
+#                 payload['notification'] = s.serialize([updated_notification])[0]
+#                 return json.dumps(payload)
+#         except Notification.DoesNotExist:
+#             raise ClientError('AUTH_ERROR', 'An error occurred with that notification. Try refreshing the browser.')
+#     return None
 
 
 @database_sync_to_async
@@ -334,11 +333,11 @@ def refresh_general_notifications(user, oldest_timestamp, newest_timestamp):
         oldest_ts = datetime.strptime(oldest_ts, '%Y-%m-%d %H:%M:%S.%f')
         newest_ts = newest_timestamp[0:newest_timestamp.find("+")]  # remove timezone because who cares
         newest_ts = datetime.strptime(newest_ts, '%Y-%m-%d %H:%M:%S.%f')
-        friend_request_ct = ContentType.objects.get_for_model(FriendRequest)
-        friend_list_ct = ContentType.objects.get_for_model(FriendList)
-        notifications = Notification.objects.filter(target=user, content_type__in=[friend_request_ct, friend_list_ct],
-                                                    timestamp__gte=oldest_ts, timestamp__lte=newest_ts).order_by(
-            '-timestamp')
+        # friend_request_ct = ContentType.objects.get_for_model(FriendRequest)
+        # friend_list_ct = ContentType.objects.get_for_model(FriendList)
+        notifications = ''  # Notification.objects.filter(target=user,
+        # content_type__in=[friend_request_ct, friend_list_ct], timestamp__gte=oldest_ts,
+        # timestamp__lte=newest_ts).order_by('-timestamp')
 
         s = LazyNotificationEncoder()
         payload['notifications'] = s.serialize(notifications)
@@ -357,10 +356,11 @@ def get_new_general_notifications(user, newest_timestamp):
     if user.is_authenticated:
         timestamp = newest_timestamp[0:newest_timestamp.find('+')]  # remove timezone because who cares
         timestamp = datetime.strptime(timestamp, '%Y-%m-%d %H:%M:%S.%f')
-        friend_request_ct = ContentType.objects.get_for_model(FriendRequest)
-        friend_list_ct = ContentType.objects.get_for_model(FriendList)
-        notifications = Notification.objects.filter(target=user, content_type__in=[friend_request_ct, friend_list_ct],
-                                                    timestamp__gt=timestamp, read=False).order_by('-timestamp')
+        # friend_request_ct = ContentType.objects.get_for_model(FriendRequest)
+        # friend_list_ct = ContentType.objects.get_for_model(FriendList)
+        notifications = ''  # Notification.objects.filter(target=user,
+        # content_type__in=[friend_request_ct, friend_list_ct], timestamp__gt=timestamp,
+        # read=False).order_by('-timestamp')
         s = LazyNotificationEncoder()
         payload['notifications'] = s.serialize(notifications)
     else:
@@ -373,9 +373,10 @@ def get_new_general_notifications(user, newest_timestamp):
 def get_unread_general_notification_count(user):
     payload = {}
     if user.is_authenticated:
-        friend_request_ct = ContentType.objects.get_for_model(FriendRequest)
-        friend_list_ct = ContentType.objects.get_for_model(FriendList)
-        notifications = Notification.objects.filter(target=user, content_type__in=[friend_request_ct, friend_list_ct])
+        # friend_request_ct = ContentType.objects.get_for_model(FriendRequest)
+        # friend_list_ct = ContentType.objects.get_for_model(FriendList)
+        notifications = ''  # Notification.objects.filter(target=user, content_type__in=[friend_request_ct,
+        # friend_list_ct])
 
         unread_count = 0
         if notifications:
@@ -411,8 +412,9 @@ def get_chat_notifications(user, page_number):
         1. UnreadChatRoomMessages
     """
     if user.is_authenticated:
-        chatmessage_ct = ContentType.objects.get_for_model(UnreadChatRoomMessages)
-        notifications = Notification.objects.filter(target=user, content_type=chatmessage_ct).order_by('-timestamp')
+        # chatmessage_ct = ContentType.objects.get_for_model(UnreadChatRoomMessages)
+        notifications = ''  # Notification.objects.filter(target=user,
+        # content_type=chatmessage_ct).order_by('-timestamp')
         p = Paginator(notifications, DEFAULT_NOTIFICATION_PAGE_SIZE)
 
         # sleep 1s for testing
@@ -443,9 +445,9 @@ def get_new_chat_notifications(user, newest_timestamp):
     if user.is_authenticated:
         timestamp = newest_timestamp[0:newest_timestamp.find('+')]  # remove timezone because who cares
         timestamp = datetime.strptime(timestamp, '%Y-%m-%d %H:%M:%S.%f')
-        chatmessage_ct = ContentType.objects.get_for_model(UnreadChatRoomMessages)
-        notifications = Notification.objects.filter(target=user, content_type__in=[chatmessage_ct],
-                                                    timestamp__gt=timestamp).order_by('-timestamp')
+        # chatmessage_ct = ContentType.objects.get_for_model(UnreadChatRoomMessages)
+        notifications = ''  # Notification.objects.filter(target=user, content_type__in=[chatmessage_ct],
+        # timestamp__gt=timestamp).order_by('-timestamp')
         s = LazyNotificationEncoder()
         payload['notifications'] = s.serialize(notifications)
         return json.dumps(payload)
@@ -457,8 +459,8 @@ def get_new_chat_notifications(user, newest_timestamp):
 def get_unread_chat_notification_count(user):
     payload = {}
     if user.is_authenticated:
-        chatmessage_ct = ContentType.objects.get_for_model(UnreadChatRoomMessages)
-        notifications = Notification.objects.filter(target=user, content_type__in=[chatmessage_ct])
+        # chatmessage_ct = ContentType.objects.get_for_model(UnreadChatRoomMessages)
+        notifications = ''  # Notification.objects.filter(target=user, content_type__in=[chatmessage_ct])
 
         unread_count = 0
         if notifications:

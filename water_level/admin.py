@@ -1,7 +1,7 @@
 from django.contrib import admin
 from helpers.caching_paginator import CachingPaginator
 
-from tank_level.models import SonarPinout, SampleMeasurementSettings, TankSize, WaterLevel
+from water_level.models import SonarPinout, SampleMeasurementSettings, TankSize, WaterLevel
 
 # Register your models here.
 
