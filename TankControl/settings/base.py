@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'core',
     'notification',
     'public_chat',
+    'relay_control',
     'water_level',
 
     # Third party apps

@@ -1,10 +1,40 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% load static %}
 
-</body>
-</html>
+
+<div class="card mt-3 h-50">
+	<div class="card-header">
+        <div class="d-flex flex-row justify-content-between">
+            <h7 class="">RELAY CONTROL</h7>
+            <div class="d-flex flex-row align-items-center">
+                <span class="material-icons m-auto pr-1">dialpad</span>
+            </div>
+        </div>
+    </div>
+
+    <div id="gauge" class="card-body">
+        <div class="form-check form-check-inline">
+            <!-- PUMP TOGGLE -->
+            <div class="d-flex flex-column justify-content-center align-items-center m-3">
+                <input id="pump-toggle" type="checkbox" {% if not user.is_authenticated %} disabled {% else %} checked {% endif %} data-toggle="toggle"
+                       data-on="On" data-off="Off" data-onstyle="success" data-offstyle="danger" class="custom-control-input">
+                <label for="pump-toggle">PUMP</label>
+            </div>
+            <!-- MAINS TOGGLE -->
+            <div class="d-flex flex-column justify-content-center align-items-center m-3">
+                <input id="mains-toggle" type="checkbox" {% if not user.is_authenticated %} disabled {% else %} checked {% endif %} data-toggle="toggle"
+                       data-on="On" data-off="Off" data-onstyle="success" data-offstyle="danger" class="custom-control-input">
+                <label for="mains-toggle">MAINS</label>
+            </div>
+            <!-- BYP TOGGLE -->
+            <div class="d-flex flex-column justify-content-center align-items-center m-3">
+                <input id="byp-toggle" type="checkbox" {% if not user.is_authenticated %} disabled {% else %} checked {% endif %} data-toggle="toggle"
+                       data-on="On" data-off="Off" data-onstyle="success" data-offstyle="danger" class="custom-control-input">
+                <label for="byp-toggle">BYP</label>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-footer">
+        FOOTER
+    </div>
+</div>

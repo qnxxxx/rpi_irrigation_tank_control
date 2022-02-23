@@ -4,9 +4,11 @@
 
 
 <div class="row justify-content-end">
-    {% include 'water_level/water_level_widget.html' %}
+        {% include 'relay_control/relay_control.html' %}
 
-    {% include 'public_chat/snippets/public_chat_room.html' with room_id=room_id %}
+        {% include 'water_level/water_level_widget.html' %}
+
+        {% include 'public_chat/snippets/public_chat_room.html' with room_id=room_id %}
 </div>
 
 
