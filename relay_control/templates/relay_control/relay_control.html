@@ -2,62 +2,68 @@
 
 
 <div class="card mt-3 h-50">
-	<div class="card-header">
-        <div class="d-flex flex-row justify-content-between">
-            <h7 class="">RELAY CONTROL</h7>
-            <div class="d-flex flex-row align-items-center">
-                <span class="material-icons m-auto pr-1">dialpad</span>
-            </div>
-        </div>
+  <div class="card-header">
+    <div class="d-flex flex-row justify-content-between">
+      <h7 class="">RELAY CONTROL</h7>
+      <div class="d-flex flex-row align-items-center">
+        <span class="material-icons m-auto pr-1">dialpad</span>
+      </div>
     </div>
+  </div>
 
-    <div id="gauge" class="card-body">
-        <div class="form-check form-check-inline">
-            <!-- PUMP TOGGLE -->
-            <div class="d-flex flex-column justify-content-center align-items-center m-3">
-                <input id="pump-toggle" type="checkbox"  data-toggle="toggle" {% if not user.is_authenticated %} disabled {% endif %}
-                       data-on="On" data-off="Off" data-onstyle="success" data-offstyle="danger" class="custom-control-input">
-                <label for="pump-toggle">PUMP</label>
-            </div>
-            <!-- MAINS TOGGLE -->
-            <div class="d-flex flex-column justify-content-center align-items-center m-3">
-                <input id="mains-toggle" type="checkbox" data-toggle="toggle" {% if not user.is_authenticated %} disabled {% endif %}
-                       data-on="On" data-off="Off" data-onstyle="success" data-offstyle="danger" class="custom-control-input">
-                <label for="mains-toggle">MAINS</label>
-            </div>
-            <!-- BYP TOGGLE -->
-            <div class="d-flex flex-column justify-content-center align-items-center m-3">
-                <input id="byp-toggle" type="checkbox" data-toggle="toggle" {% if not user.is_authenticated %} disabled {% endif %} 
-                       data-on="On" data-off="Off" data-onstyle="success" data-offstyle="danger" class="custom-control-input">
-                <label for="byp-toggle">BYP</label>
-            </div>
-        </div>
-        <br>
-        <button type="button" class="btn btn-outline-primary" onclick="test_mains()">MAINS TEST</button>
-    </div>
+  <div id="gauge" class="card-body">
+    <div class="form-check form-check-inline">
+      <!-- PUMP TOGGLE -->
+      <div class="d-flex flex-column justify-content-center align-items-center m-3">
+        <input id="pump-toggle" type="checkbox" data-toggle="toggle" {% if not user.is_authenticated %}
+               disabled {% endif %}
+               data-on="On" data-off="Off" data-onstyle="success" data-offstyle="danger" class="custom-control-input">
+        <label for="pump-toggle">PUMP</label>
+      </div>
 
-    <div class="card-footer">
-        FOOTER
+      <!-- MAINS TOGGLE -->
+      <div class="d-flex flex-column justify-content-center align-items-center m-3">
+        <input id="mains-toggle" type="checkbox" data-toggle="toggle" {% if not user.is_authenticated %}
+               disabled {% endif %}
+               data-on="On" data-off="Off" data-onstyle="success" data-offstyle="danger" class="custom-control-input">
+        <label for="mains-toggle">MAINS</label>
+      </div>
+
+      <!-- BYP TOGGLE -->
+      <div class="d-flex flex-column justify-content-center align-items-center m-3">
+        <input id="byp-toggle" type="checkbox" data-toggle="toggle" {% if not user.is_authenticated %}
+               disabled {% endif %}
+               data-on="On" data-off="Off" data-onstyle="success" data-offstyle="danger" class="custom-control-input">
+        <label for="byp-toggle">BYP</label>
+      </div>
     </div>
+    <br>
+    <button type="button" class="btn btn-outline-primary" onclick="test_mains()">MAINS TEST</button>
+  </div>
+
+  <div class="card-footer">
+    FOOTER
+  </div>
 </div>
+
 
 <!-- TESTING DISABLED VIEW INDICATION - WORKING !!! -->
 <script type="text/javascript">
-    function test_mains() {
-        let mainsToggleState = document.getElementById("mains-toggle").checked
+  function test_mains() {
+    let mainsToggleState = document.getElementById("mains-toggle").checked
 
-        if (mainsToggleState === true && modeToggleState === false) {
-            $('#mains-toggle').bootstrapToggle('off');
-        } else if (mainsToggleState === false && modeToggleState === true) {
-            $('#mains-toggle').bootstrapToggle('enable');
-            $('#mains-toggle').bootstrapToggle('on');
-            $('#mains-toggle').bootstrapToggle('disable');
-        } else if (mainsToggleState === false && modeToggleState === false) {
-            $('#mains-toggle').bootstrapToggle('on');
-        } else {
-            $('#mains-toggle').bootstrapToggle('enable');
-            $('#mains-toggle').bootstrapToggle('off');
-            $('#mains-toggle').bootstrapToggle('disable');
-        }
+    if (mainsToggleState === true && modeToggleState === false) {
+      $('#mains-toggle').bootstrapToggle('off');
+    } else if (mainsToggleState === false && modeToggleState === true) {
+      $('#mains-toggle').bootstrapToggle('enable');
+      $('#mains-toggle').bootstrapToggle('on');
+      $('#mains-toggle').bootstrapToggle('disable');
+    } else if (mainsToggleState === false && modeToggleState === false) {
+      $('#mains-toggle').bootstrapToggle('on');
+    } else {
+      $('#mains-toggle').bootstrapToggle('enable');
+      $('#mains-toggle').bootstrapToggle('off');
+      $('#mains-toggle').bootstrapToggle('disable');
     }
+  }
 </script>

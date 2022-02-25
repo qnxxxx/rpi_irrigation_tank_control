@@ -7,52 +7,53 @@
 
 
 <style>
-    .gauge {
-      /*background-color: #2d4e5a;*/
-      height: 200px;
-      width: 200px;
-      position: relative;
-    }
+  .gauge {
+    /*background-color: #2d4e5a;*/
+    height: 200px;
+    width: 200px;
+    position: relative;
+  }
 </style>
 
 
 <div class="card mt-3 h-50">
-	<div class="card-header">
-        <div class="d-flex flex-row justify-content-between">
-            <h7 class="">WATER LEVEL</h7>
-            <div class="d-flex flex-row align-items-center">
-                <span class="material-icons m-auto pr-1">speed</span>
-            </div>
-        </div>
+  <div class="card-header">
+    <div class="d-flex flex-row justify-content-between">
+      <h7 class="">WATER LEVEL</h7>
+      <div class="d-flex flex-row align-items-center">
+        <span class="material-icons m-auto pr-1">speed</span>
+      </div>
     </div>
+  </div>
 
-    <div id="gauge" class="card-body gauge"></div>
+  <div id="gauge" class="card-body gauge"></div>
 
 
-    <div class="card-footer">
-        <!-- Default dropright button -->
-        <div class="btn-group dropright">
-        <button type="button" class="btn btn-secondary dropright-toggle" data-bs-toggle="popover" aria-haspopup="true" aria-expanded="false">
-            Tank Gauge Settings
-        </button>
+  <div class="card-footer">
+    <!-- Default dropright button -->
+    <div class="btn-group dropright">
+      <button type="button" class="btn btn-secondary dropright-toggle" data-bs-toggle="popover" aria-haspopup="true"
+              aria-expanded="false">
+        Tank Gauge Settings
+      </button>
 
-        <div class="dropdown-menu">
-            <!-- Dropdown menu links -->
-            <button id="onetext" onclick="setOneText()">Set one label</button>
-            <button id="twotext" onclick="setTwoText()">Set two labels</button>
-            <button id="shrink" onclick="shrink()">Shrink</button>
-            <button id="enlarge" onclick="enlarge()">Enlarge</button>
-            <button onclick="addArrow()">Add arrow</button>
-            <button onclick="removeArrow()">Remove arrow</button>
-            <button onclick="upArrow()">Up arrow</button>
-            <button onclick="downArrow()">Down arrow</button>
-            <button onclick="defaultArrow()">Default arrow</button>
-            <button onclick="setDecimalZero()">No Decimal</button>
-            <button onclick="setDecimalOne()">One Decimal</button>
-            <button onclick="setDecimalTwo()">Two Decimal</button>
-        </div>
+      <div class="dropdown-menu">
+        <!-- Dropdown menu links -->
+        <button id="onetext" onclick="setOneText()">Set one label</button>
+        <button id="twotext" onclick="setTwoText()">Set two labels</button>
+        <button id="shrink" onclick="shrink()">Shrink</button>
+        <button id="enlarge" onclick="enlarge()">Enlarge</button>
+        <button onclick="addArrow()">Add arrow</button>
+        <button onclick="removeArrow()">Remove arrow</button>
+        <button onclick="upArrow()">Up arrow</button>
+        <button onclick="downArrow()">Down arrow</button>
+        <button onclick="defaultArrow()">Default arrow</button>
+        <button onclick="setDecimalZero()">No Decimal</button>
+        <button onclick="setDecimalOne()">One Decimal</button>
+        <button onclick="setDecimalTwo()">Two Decimal</button>
+      </div>
     </div>
-    </div>
+  </div>
 </div>
 
 
