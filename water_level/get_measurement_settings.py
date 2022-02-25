@@ -1,9 +1,10 @@
-from water_level.models import SampleMeasurementSettings
+from water_level.models import SampleMeasurement
 
 
 # Reads settings for the measurement
 def read_measurement_settings():
-    sample_size, sample_wait, temperature, measurements_interval = SampleMeasurementSettings.objects.query_all().values_list()[0][2:]
+    sample_size, sample_wait, temperature, measurements_interval = \
+        SampleMeasurement.objects.query_all().values_list()[0][2:]
     return sample_size, float(sample_wait), temperature, measurements_interval
 
 

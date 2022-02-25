@@ -28,25 +28,24 @@ class SonarPinout(models.Model):
         verbose_name_plural = 'Sonar pinout'
 
 
-class SampleMeasurementSettingsManager(models.Manager):  # query set
+class SampleMeasurementManager(models.Manager):  # query set
     @staticmethod
     def query_all():
-        qs = SampleMeasurementSettings.objects
+        qs = SampleMeasurement.objects
         return qs
 
 
-class SampleMeasurementSettings(models.Model):
+class SampleMeasurement(models.Model):
     """
-    Settings for the distance measurement
+    Settings for sample distance measurement
     """
     title = models.CharField(max_length=255, unique=True, blank=False, default='Sample Measurement Settings')
     sample_size = models.IntegerField(default=11)
     sample_wait = models.DecimalField(max_digits=5, decimal_places=1, default=0.1)
     temperature = models.IntegerField(default=20)
-
     measurements_interval = models.IntegerField(default=10)
 
-    objects = SampleMeasurementSettingsManager()
+    objects = SampleMeasurementManager()
 
     def __str__(self):
         return self.title
@@ -102,3 +101,26 @@ class WaterLevel(models.Model):
 
     def __str__(self):
         return self.distance
+
+
+class MeasurementsIntervalManager(models.Manager):  # query set
+    @staticmethod
+    def query_all():
+        qs = MeasurementsInterval.objects
+        return qs
+
+
+class MeasurementsInterval(models.Model):
+    """
+    Settings for the time interval between measurements in seconds
+    """
+    title = models.CharField(max_length=255, unique=True, blank=False, default='Measurements Interval')
+    interval = models.IntegerField(default=10)
+
+    objects = MeasurementsIntervalManager()
+
+    def __str__(self):
+        return self.title
+
+    class Meta:
+        verbose_name_plural = 'Measurements interval'
