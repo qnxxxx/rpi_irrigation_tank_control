@@ -99,9 +99,8 @@ def login_view(request, *args, **kwargs):
 
 def get_redirect_if_exists(request):
     redirect = None
-    if request.GET:
-        if request.GET.get('next'):
-            redirect = str(request.GET.get('next'))
+    if request.GET and request.GET.get('next'):
+        redirect = str(request.GET.get('next'))
     return redirect
 
 
@@ -118,8 +117,8 @@ def account_view(request, *args, **kwargs):
     user_id = kwargs.get('user_id')
     try:
         account = Account.objects.get(pk=user_id)
-    except:
-        return HttpResponse('Something went wrong.')
+    except Exception as e:
+        return HttpResponse(repr(e))  # 'Something went wrong'
     if account:
         context['id'] = account.id
         context['username'] = account.username
