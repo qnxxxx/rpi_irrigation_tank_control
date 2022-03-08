@@ -3,57 +3,34 @@
 
 <link rel='stylesheet' href="{% static 'jquery-ui-1.13.1/jquery-ui.css' %}">
 <link rel='stylesheet' href="{% static 'mdl/material.min.css' %}">
-<link href="https://fonts.googleapis.com/css2?family=Material+Icons" rel="stylesheet">
+{#<link href="https://fonts.googleapis.com/css2?family=Material+Icons" rel="stylesheet">#}
 
 
 <style>
   .tank-gauge {
-    /*background-color: #2d4e5a;*/
-    height: 200px;
-    width: 200px;
+    height: 175px;
+    width: 175px;
     position: relative;
   }
 </style>
 
 
-<div class="card mt-3 h-50">
-  <div class="card-header">
-    <div class="d-flex flex-row justify-content-between">
-      <h7 class="">WATER LEVEL</h7>
-      <div class="d-flex flex-row align-items-center">
-        <span class="material-icons m-auto pr-1">speed</span>
-      </div>
-    </div>
+<div class="card-body d-flex flex-row align-items-end w-50">
+  <div class="collapse" id="gs">
+    <button id="onetext" onclick="setOneText()" href="#">Set one label</button>
+    <button id="twotext" onclick="setTwoText()" href="#">Set two labels</button>
+    <br>
+    <br>
+    <button onclick="addArrow()" href="#">Add arrow</button>
+    <button onclick="removeArrow()" href="#">Remove arrow</button>
+    <br>
+    <br>
+    <button onclick="setDecimalZero()">No Decimal</button>
+    <button onclick="setDecimalOne()">One Decimal</button>
+    <button onclick="setDecimalTwo()">Two Decimal</button>
   </div>
 
-  <div class="card-body tank-gauge"></div>
-
-
-  <div class="card-footer">
-    <!-- Default dropright button -->
-    <div class="btn-group dropright">
-      <button type="button" class="btn btn-secondary dropright-toggle" data-bs-toggle="popover" aria-haspopup="true"
-              aria-expanded="false">
-        Tank Gauge Settings
-      </button>
-
-      <div class="dropdown-menu">
-        <!-- Dropdown menu links -->
-        <button id="onetext" onclick="setOneText()">Set one label</button>
-        <button id="twotext" onclick="setTwoText()">Set two labels</button>
-        <button id="shrink" onclick="shrink()">Shrink</button>
-        <button id="enlarge" onclick="enlarge()">Enlarge</button>
-        <button onclick="addArrow()">Add arrow</button>
-        <button onclick="removeArrow()">Remove arrow</button>
-        <button onclick="upArrow()">Up arrow</button>
-        <button onclick="downArrow()">Down arrow</button>
-        <button onclick="defaultArrow()">Default arrow</button>
-        <button onclick="setDecimalZero()">No Decimal</button>
-        <button onclick="setDecimalOne()">One Decimal</button>
-        <button onclick="setDecimalTwo()">Two Decimal</button>
-      </div>
-    </div>
-  </div>
+  <div class="tank-gauge"></div>
 </div>
 
 
@@ -61,6 +38,25 @@
 <script src="{% static 'jquery/jquery-3.6.0.js' %}"></script>
 <script src="{% static 'jquery-ui-1.13.1/jquery-ui.min.js' %}"></script>
 <script src="{% static 'mdl/material.min.js' %}"></script>
+
+<script type="text/javascript">
+  $(function () {
+
+    $("#gauge-settings").popover({
+      container: "body",
+      html: true,
+      title: function () {
+        let title = $(this).attr("data-popover-content");
+        return $(title).children(".popover-header").html();
+      },
+      content: function () {
+        let content = $(this).attr("data-popover-content");
+        return $(content).children(".popover-body").html();
+      }
+
+    });
+  });
+</script>
 
 
 {% include 'water_level/snippets/tank_js.html' %}

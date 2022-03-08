@@ -1,16 +1,16 @@
-# from django.utils import timezone
-# from channels.generic.websocket import AsyncJsonWebsocketConsumer
-# from channels.db import database_sync_to_async
-# # Import some kind of scheduler
-#
-# import json
-#
-# from water_level.measurement import Measurement
-# from water_level.models import SonarSettings, MeasurementSettings, TankLevel
-# from chat.exceptions import ClientError
-# from helpers.timestamp import calculate_timestamp
-#
-#
+from django.utils import timezone
+from channels.generic.websocket import AsyncJsonWebsocketConsumer
+from channels.db import database_sync_to_async
+# Import some kind of scheduler
+
+import json
+
+from water_level.measurement import Measurement
+from water_level.models import SonarPinout, SampleMeasurement, MeasurementsInterval, WaterLevel
+from public_chat.exceptions import ClientError
+from helpers.timestamp import calculate_timestamp
+
+
 # # Example taken from:
 # # https://github.com/andrewgodwin/channels-examples/blob/master/multichat/chat/consumers.py
 # class TankLevelConsumer(AsyncJsonWebsocketConsumer):

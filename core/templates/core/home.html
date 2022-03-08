@@ -4,25 +4,49 @@
 
 
   <!-- REGULAR SCREENS -->
-  <div class="row justify-content-end">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col">
+        <div class="card w-100 h-100">
+          <div class="card-header">
+            <div class="d-flex flex-row justify-content-between">
+              <h7 class="">DASHBOARD</h7>
+              <div class="d-flex flex-row align-items-center">
+                <span class="material-icons m-auto pr-1">speed</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="card-body">
+            <div class="card-group justify-content-between">
+              {% include 'relay_control/relay_control.html' %}
+              {% include 'water_level/water_level_widget.html' %}
+              {% include 'water_level/water_level_graph.html' %}
+            </div>
+          </div>
+
+          <div class="card-footer gs-container">
+            <a type="button" class="btn btn-primary" href="#gs" data-toggle="collapse">
+              Gauge Settings
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="col">
+        {% include 'public_chat/snippets/public_chat_room.html' with room_id=room_id %}
+      </div>
+    </div>
+  </div>
+  <!-- END REGULAR SCREENS -->
+
+  <!-- TODO: MOBILE SCREENS -->
+  <div class="d-flex d-md-none flex-column p-2">
     {% include 'relay_control/relay_control.html' %}
 
     {% include 'water_level/water_level_widget.html' %}
 
     {% include 'public_chat/snippets/public_chat_room.html' with room_id=room_id %}
-  </div>
-  <!-- END REGULAR SCREENS -->
-
-  <!-- TODO: MOBILE SCREENS -->
-  <div class="main d-flex d-md-none flex-column p-2">
-    {% include 'water_level/water_level_widget.html' %}
-
-    {% include 'water_level/water_level_widget.html' %}
-
-    {% include 'public_chat/snippets/public_chat_room.html' with room_id=room_id %}
-
-    <!-- TODO: one day -->
-    <!-- <p>This site is not meant to be viewed on a mobile device. Please download the <a href="#">app</a>.</p> -->
   </div>
   <!-- END MOBILE SCREENS -->
 

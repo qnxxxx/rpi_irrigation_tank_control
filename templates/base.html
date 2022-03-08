@@ -52,13 +52,18 @@
   </div>
 </div>
 
+<style>
+	.main{
+		min-height: 75vh;
+		height: 100%;
+	}
+</style>
+
 <!-- CONTENT -->
 <div class="main">
-  <div class="container-fluid">
     {% block content %}
 
     {% endblock content %}
-  </div>
 </div>
 
 <!-- SCRIPTS (I: the order is important!) -->
@@ -70,8 +75,10 @@
 <script src="{% static 'bootstrap4-toggle-3.6.1/js/bootstrap4-toggle.min.js' %}"></script>
 <!-- Cropperjs -->
 <script type="module" src="{% static 'cropperjs/dist/cropper.min.js' %}"></script>
-
+<!-- Material Icons -->
 <script src="{% static 'mdl/material.min.js' %}"></script>
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <!-- Loading spinner script -->
 <script type="text/javascript">

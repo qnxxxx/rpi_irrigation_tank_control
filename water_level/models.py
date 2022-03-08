@@ -15,9 +15,9 @@ class SonarPinout(models.Model):
     Pinout for sonar GPIO
     """
     title = models.CharField(max_length=255, unique=True, blank=False, default='Sonar Pinout')
-    trigger_pin = models.IntegerField(default=23)
-    echo_pin = models.IntegerField(default=24)
-    failsafe_pin = models.IntegerField(default=18)
+    trigger_pin = models.IntegerField(default=23, verbose_name='Trigger pin (GPIO Number)')
+    echo_pin = models.IntegerField(default=24, verbose_name='Echo pin (GPIO Number)')
+    failsafe_pin = models.IntegerField(default=18, verbose_name='Failsafe pin (GPIO Number)')
 
     objects = SonarPinoutManager()
 
@@ -40,10 +40,9 @@ class SampleMeasurement(models.Model):
     Settings for sample distance measurement
     """
     title = models.CharField(max_length=255, unique=True, blank=False, default='Sample Measurement Settings')
-    sample_size = models.IntegerField(default=11)
-    sample_wait = models.DecimalField(max_digits=5, decimal_places=1, default=0.1)
-    temperature = models.IntegerField(default=20)
-    measurements_interval = models.IntegerField(default=10)
+    sample_size = models.IntegerField(default=11, verbose_name='Sample size (Avg of this many single measurements)')
+    sample_wait = models.DecimalField(max_digits=5, decimal_places=1, default=0.1, verbose_name='Sample Wait (seconds)')
+    temperature = models.IntegerField(default=20, verbose_name='Temperature (°C)')
 
     objects = SampleMeasurementManager()
 
@@ -66,9 +65,9 @@ class TankSize(models.Model):
     Settings for sonar GPIO
     """
     title = models.CharField(max_length=255, unique=True, blank=False, default='Tank Size')
-    length = models.DecimalField(max_digits=5, decimal_places=1, default=100.0)
-    width = models.DecimalField(max_digits=5, decimal_places=1, default=100.0)
-    depth = models.DecimalField(max_digits=5, decimal_places=1, default=100.0)
+    length = models.DecimalField(max_digits=5, decimal_places=1, default=100.0, verbose_name='Tank Length (cm)')
+    width = models.DecimalField(max_digits=5, decimal_places=1, default=100.0, verbose_name='Tank Width (cm)')
+    depth = models.DecimalField(max_digits=5, decimal_places=1, default=100.0, verbose_name='Tank Depth (cm)')
 
     objects = TankSizeManager()
 
@@ -90,17 +89,17 @@ class WaterLevel(models.Model):
     """
     Distance from sensor to water level, measured in cm
     """
-    distance = models.DecimalField(max_digits=10, decimal_places=1, default=-1.0)
-    volume_m3 = models.DecimalField(max_digits=10, decimal_places=2, default=-1.0)
-    volume_l = models.DecimalField(max_digits=10, decimal_places=1, default=-1.0)
+    water_level = models.DecimalField(max_digits=10, decimal_places=1, default=-1.0, verbose_name='To Water Level (cm)')
+    volume_m3 = models.DecimalField(max_digits=10, decimal_places=2, default=-1.0, verbose_name='Water Volume (m³)')
+    volume_l = models.IntegerField(default=-1, verbose_name='Water Volume (liters)')
     timestamp = models.DateTimeField(auto_now_add=True)
-    failsafe_engaged = models.BooleanField(default=False)
-    status = models.CharField(max_length=100, default='')
+    failsafe_status = models.BooleanField(default=False)
+    status_message = models.CharField(max_length=100, default='')
 
     objects = WaterLevelManager()
 
     def __str__(self):
-        return self.distance
+        return self.water_level
 
 
 class MeasurementsIntervalManager(models.Manager):  # query set
@@ -115,7 +114,7 @@ class MeasurementsInterval(models.Model):
     Settings for the time interval between measurements in seconds
     """
     title = models.CharField(max_length=255, unique=True, blank=False, default='Measurements Interval')
-    interval = models.IntegerField(default=10)
+    interval = models.IntegerField(default=10, verbose_name='Measurement Interval (seconds)')
 
     objects = MeasurementsIntervalManager()
 

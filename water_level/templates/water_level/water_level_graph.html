@@ -1,10 +1,149 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% load static %}
 
-</body>
-</html>
+
+<div class="card-body d-flex flex-column align-items-start w-100 h-50">
+
+  <canvas id="wlchart"></canvas>
+
+  <div>
+    <h3>
+      {% for level in levels %} ({{ level.timestamp }}, {{ level.water_level }}), {% endfor %}
+    </h3>
+  </div>
+
+</div>
+
+
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/hammerjs"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+
+
+<!-- Chart zoom -->
+<script type="text/javascript">
+  const zoomOptions = {
+    zoom: {
+      wheel: {
+        enabled: false,
+      },
+      pinch: {
+        enabled: false,
+      },
+      mode: 'x',
+    },
+    pan: {
+      enabled: false,
+      mode: 'xy',
+    }
+  };
+  // </block>
+
+  const panStatus = () => zoomOptions.pan.enabled ? 'enabled' : 'disabled';
+  const zoomStatus = () => zoomOptions.zoom.wheel.enabled ? 'enabled' : 'disabled';
+</script>
+
+
+<!-- Chart Scales -->
+<script type="text/javascript">
+  const scales = {
+    x: {
+      position: 'bottom',
+      type: 'time',
+      ticks: {
+        autoSkip: true,
+        autoSkipPadding: 50,
+        maxRotation: 0
+      },
+      time: {
+        displayFormats: {
+          hour: 'HH:mm',
+          minute: 'HH:mm',
+          second: 'HH:mm:ss'
+        }
+      }
+    },
+    y: {
+      position: 'right',
+      ticks: {
+        callback: (val, index, ticks) => index === 0 || index === ticks.length - 1 ? null : val,
+      },
+      grid: {
+        borderColor: 'rgba(0, 0.1, 0, 0.1)',
+        color: 'rgba(0, 0, 0, 0.1)',
+      },
+      title: {
+        display: true,
+        text: (ctx) => ctx.scale.axis + ' axis',
+      }
+    },
+  };
+</script>
+
+
+<!-- Chart-active border -->
+<script type="text/javascript">
+  const borderPlugin = {
+    id: 'chartAreaBorder',
+    beforeDraw(chart, args, options) {
+      const {ctx, chartArea: {left, top, width, height}} = chart;
+      if (chart.options.plugins.zoom.zoom.wheel.enabled) {
+        ctx.save();
+        ctx.strokeStyle = 'red';
+        ctx.lineWidth = 1;
+        ctx.strokeRect(left, top, width, height);
+        ctx.restore();
+      }
+    }
+  };
+</script>
+
+
+<!-- Chart config -->
+<script type="text/javascript">
+  const labels = [{% for level in levels %} '{{ level.timestamp }}', {% endfor %}];
+
+  const data = {
+    labels: labels,
+    datasets: [{
+      label: 'My First dataset',
+      backgroundColor: 'rgb(255, 99, 132)',
+      borderColor: 'rgb(255, 99, 132)',
+      data: [{% for level in levels %} ('{{ level.timestamp }}', {{ level.water_level }}), {% endfor %}],
+    }]
+  };
+
+  const config = {
+    type: 'line',
+    data: data,
+    options: {
+      scales: scales,
+      plugins: {
+        zoom: zoomOptions,
+        title: {
+          display: true,
+          position: 'bottom',
+          text: (ctx) => 'Zoom: ' + zoomStatus() + ', Pan: ' + panStatus()
+        }
+      },
+      onClick(e) {
+        const chart = e.chart;
+        chart.options.plugins.zoom.zoom.wheel.enabled = !chart.options.plugins.zoom.zoom.wheel.enabled;
+        chart.options.plugins.zoom.zoom.pinch.enabled = !chart.options.plugins.zoom.zoom.pinch.enabled;
+        chart.options.plugins.zoom.pan.enabled = !chart.options.plugins.zoom.pan.enabled;
+        chart.update();
+      }
+    },
+    plugins: [borderPlugin]
+  };
+</script>
+
+
+<!-- Chart render -->
+<script type="text/javascript">
+  const myChart = new Chart(
+    document.getElementById('wlchart'),
+    config
+  );
+</script>

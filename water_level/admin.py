@@ -7,7 +7,7 @@ from water_level.models import SonarPinout, SampleMeasurement, TankSize, WaterLe
 
 
 class SampleMeasurementAdmin(admin.ModelAdmin):
-    list_display = ['id', 'title', 'sample_size', 'sample_wait', 'temperature', 'measurements_interval']
+    list_display = ['id', 'title', 'sample_size', 'sample_wait', 'temperature']
     readonly_fields = ['id']
 
     class Meta:
@@ -40,9 +40,9 @@ admin.site.register(TankSize, TankSizeAdmin)
 
 
 class WaterLevelAdmin(admin.ModelAdmin):
-    list_display = ['id', 'timestamp', 'distance', 'volume_m3', 'volume_l', 'status', 'failsafe_engaged']
-    search_fields = ['id', 'distance', 'volume_m3', 'volume_l', 'timestamp', 'status', 'failsafe_engaged']
-    readonly_fields = ['id', 'distance', 'volume_m3', 'volume_l', 'timestamp', 'status', 'failsafe_engaged']
+    list_display = ['id', 'timestamp', 'water_level', 'volume_m3', 'volume_l', 'status_message', 'failsafe_status']
+    search_fields = ['id', 'timestamp', 'water_level', 'volume_m3', 'volume_l', 'status_message', 'failsafe_status']
+    readonly_fields = ['id', 'timestamp', 'water_level', 'volume_m3', 'volume_l', 'status_message', 'failsafe_status']
 
     show_full_result_count = False
     paginator = CachingPaginator

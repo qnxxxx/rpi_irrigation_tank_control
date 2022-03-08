@@ -9,7 +9,7 @@ def read_tank_size():
 
 sizes = read_tank_size()
 
-# Real size of the tank
-LENGTH = sizes[0]
-WIDTH = sizes[1]
-DEPTH = sizes[2]
+# Measurements of the tank
+TANK_LENGTH = sizes[0]
+TANK_WIDTH = sizes[1]
+TANK_DEPTH = sizes[2]

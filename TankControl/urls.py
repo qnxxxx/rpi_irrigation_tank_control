@@ -42,6 +42,8 @@ urlpatterns = [
     path('register/', register_view, name='register'),
     path('search', account_search_view, name='search'),
 
+    path('', include('water_level.urls')),
+
     # Password reset links (ref: https://github.com/django/django/blob/master/django/contrib/auth/views.py)
     path('password_change/', auth_views.PasswordChangeView.as_view(template_name='password_reset/password_change.html'),
          name='password_change'),
