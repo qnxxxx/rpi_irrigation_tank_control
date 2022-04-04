@@ -12,8 +12,6 @@
     flex-direction: column-reverse;
   }
 
-
-
   .profile-image {
     width: 33px;
     height: 33px;
@@ -83,7 +81,7 @@
       <h7 class="">CHAT</h7>
       <div class="d-flex flex-row align-items-center">
         <span class="material-icons m-auto pr-1 connected-users-icon">person_outline</span>
-        <span class="m-auto connected-users" id="id_connected_users"></span>
+        <span class="4m-auto connected-users" id="id_connected_users"></span>
       </div>
     </div>
   </div>
@@ -124,12 +122,12 @@
   {% endif %}
 
   // console.log("Connecting to " + pcr_ws_path);
-  public_chat_socket = new WebSocket(pcr_ws_path);
+  const public_chat_socket = new WebSocket(pcr_ws_path);
 
   // Handle incoming messages
   public_chat_socket.onmessage = function (message) {
-    // console.log("Got chat websocket message " + message.data);
     let data = JSON.parse(message.data);
+    // console.log("Got chat websocket message " + data);
 
     // display the progress bar?
     displayChatroomLoadingSpinner(data.display_progress_bar)
@@ -176,12 +174,12 @@
   };
 
   public_chat_socket.onOpen = function (e) {
-    console.log("Public ChatSocket onOpen", e)
-  }
+    console.log("Public ChatSocket onOpen", e);
+  };
 
   public_chat_socket.onerror = function (e) {
-    console.log('Public ChatSocket error', e)
-  }
+    console.log('Public ChatSocket error', e);
+  };
 
   if (public_chat_socket.readyState === WebSocket.OPEN) {
     console.log("Public ChatSocket OPEN")

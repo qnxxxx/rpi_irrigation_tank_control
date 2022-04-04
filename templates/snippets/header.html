@@ -147,7 +147,6 @@
   </div>
   <!-- END REGULAR SCREENS -->
 
-
   <!-- MOBILE SCREENS -->
   <div class="d-flex d-md-none flex-row my-auto justify-content-between">
     <!-- HOME LINK, SEARCH BAR -->
@@ -299,20 +298,20 @@
       CHAT NOTIFICATIONS
     */
     // new 'chat' notifications data payload
-    if (data.chat_msg_type === 10) {
-      handleChatNotificationsData(data['notifications'], data['new_page_number'])
-    }
+    //if (data.chat_msg_type === 10) {
+    //  handleChatNotificationsData(data['notifications'], data['new_page_number'])
+    //}
     // "Chat" Pagination exhausted. No more results.
-    if (data.chat_msg_type === 11) {
-      setChatPaginationExhausted()
-    }
+    //if (data.chat_msg_type === 11) {
+    //  setChatPaginationExhausted()
+    //}
     // refreshed chat notifications
-    if (data.chat_msg_type === 13) {
-      handleNewChatNotificationsData(data['notifications'])
-    }
-    if (data.chat_msg_type === 14) {
-      setChatNotificationsCount(data['count'])
-    }
+    //if (data.chat_msg_type === 13) {
+    //  handleNewChatNotificationsData(data['notifications'])
+    //}
+    //if (data.chat_msg_type === 14) {
+    //  setChatNotificationsCount(data['count'])
+    //}
   }
 
   notificationSocket.onclose = function (e) {

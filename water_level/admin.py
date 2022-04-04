@@ -40,9 +40,9 @@ admin.site.register(TankSize, TankSizeAdmin)
 
 
 class WaterLevelAdmin(admin.ModelAdmin):
-    list_display = ['id', 'timestamp', 'water_level', 'volume_m3', 'volume_l', 'status_message', 'failsafe_status']
-    search_fields = ['id', 'timestamp', 'water_level', 'volume_m3', 'volume_l', 'status_message', 'failsafe_status']
-    readonly_fields = ['id', 'timestamp', 'water_level', 'volume_m3', 'volume_l', 'status_message', 'failsafe_status']
+    list_display = ['id', 'timestamp', 'water_level', 'volume_m3', 'volume_l', 'tank_fill', 'status', 'failsafe']
+    search_fields = ['id', 'timestamp', 'water_level', 'volume_m3', 'volume_l', 'tank_fill', 'status', 'failsafe']
+    readonly_fields = ['id', 'timestamp', 'water_level', 'volume_m3', 'volume_l', 'tank_fill', 'status', 'failsafe']
 
     show_full_result_count = False
     paginator = CachingPaginator

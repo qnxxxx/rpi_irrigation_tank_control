@@ -3,7 +3,7 @@ try:
 except RuntimeError:
     print("Error importing RPi.GPIO! Probably because you need superuser privileges. Use 'sudo' to run your script.")
 
-from water_level.get_sonar_settings import TRIGGER_PIN, ECHO_PIN, FAILSAFE_PIN
+from helpers.get_sonar_settings import TRIGGER_PIN, ECHO_PIN, FAILSAFE_PIN
 from relay_control.get_relay_board_settings import PUMP_PIN, MAINS_PIN, BYP_PIN
 
 

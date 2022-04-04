@@ -34,7 +34,7 @@ class NotificationConsumer(AsyncJsonWebsocketConsumer):
         """
         Called when the WebSocket closes for any reason.
         """
-        print('NotificationConsumer: disconnect')
+        print('NotificationConsumer: disconnected')
 
     async def receive_json(self, content):
         """
@@ -109,16 +109,15 @@ class NotificationConsumer(AsyncJsonWebsocketConsumer):
                         await self.send_unread_chat_notification_count(payload['count'])
                 except Exception as e:
                     print('UNREAD CHAT MESSAGE COUNT EXCEPTION: ' + str(e))
-                    pass
+
         except ClientError as e:
             print('EXCEPTION: receive_json: ' + str(e))
-            pass
 
-    async def display_progress_bar(self, shouldDisplay):
-        print('NotificationConsumer: display_progress_bar: ' + str(shouldDisplay))
+    async def display_progress_bar(self, should_display):
+        print('NotificationConsumer: display_progress_bar: ' + str(should_display))
         await self.send_json(
             {
-                'progress_bar': shouldDisplay,
+                'progress_bar': should_display,
             },
         )
 
@@ -400,7 +399,6 @@ def mark_notifications_read(user):
             for notification in notifications.all():
                 notification.read = True
                 notification.save()
-    return
 
 
 @database_sync_to_async

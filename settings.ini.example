@@ -10,5 +10,5 @@ DEFAULT_FROM_EMAIL=TankControl <noreply@tank.control.com>
 PROJECT_NAME=TankControl
 
 DB_NAME=tank_control
-DB_USER=<db_password>
+DB_USER=<db_username>
 DB_PASSWORD=<db_password>

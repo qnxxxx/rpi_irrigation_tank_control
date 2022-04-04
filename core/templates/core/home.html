@@ -20,15 +20,22 @@
           <div class="card-body">
             <div class="card-group justify-content-between">
               {% include 'relay_control/relay_control.html' %}
-              {% include 'water_level/water_level_widget.html' %}
+              {% include 'water_level/water_level.html' %}
               {% include 'water_level/water_level_graph.html' %}
             </div>
           </div>
 
-          <div class="card-footer gs-container">
-            <a type="button" class="btn btn-primary" href="#gs" data-toggle="collapse">
-              Gauge Settings
-            </a>
+          <div class="card-footer gs-container justify-content-between">
+            <div class="d-flex">
+              <a type="button" class="btn btn-primary" href="#gs" data-toggle="collapse">
+                Gauge Settings
+              </a>
+
+              <br>
+
+              <label for="test"></label>
+              <textarea class="flex-grow-1" id="test">{{ test }}</textarea>
+            </div>
           </div>
         </div>
       </div>
@@ -44,7 +51,7 @@
   <div class="d-flex d-md-none flex-column p-2">
     {% include 'relay_control/relay_control.html' %}
 
-    {% include 'water_level/water_level_widget.html' %}
+    {% include 'water_level/water_level.html' %}
 
     {% include 'public_chat/snippets/public_chat_room.html' with room_id=room_id %}
   </div>

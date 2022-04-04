@@ -92,9 +92,10 @@ class WaterLevel(models.Model):
     water_level = models.DecimalField(max_digits=10, decimal_places=1, default=-1.0, verbose_name='To Water Level (cm)')
     volume_m3 = models.DecimalField(max_digits=10, decimal_places=2, default=-1.0, verbose_name='Water Volume (m³)')
     volume_l = models.IntegerField(default=-1, verbose_name='Water Volume (liters)')
+    tank_fill = models.DecimalField(max_digits=10, decimal_places=2, default=-1.0, verbose_name='Tank Full (%)')
     timestamp = models.DateTimeField(auto_now_add=True)
-    failsafe_status = models.BooleanField(default=False)
-    status_message = models.CharField(max_length=100, default='')
+    failsafe = models.BooleanField(default=False)
+    status = models.CharField(max_length=100, default='')
 
     objects = WaterLevelManager()
 

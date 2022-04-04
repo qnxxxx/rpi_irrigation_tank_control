@@ -40,7 +40,7 @@ class PublicChatRoom(models.Model):
     @property
     def group_name(self):
         """
-        Returns the Channels Group name that sockets should subscribe to to get sent
+        Returns the Channels Group name that sockets should subscribe to get sent
         messages as they are generated.
         """
         return 'PublicChatRoom-%s' % self.id

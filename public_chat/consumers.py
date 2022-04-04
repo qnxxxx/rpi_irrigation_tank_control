@@ -16,6 +16,10 @@ from public_chat.utils import LazyRoomChatMessageEncoder
 # https://github.com/andrewgodwin/channels-examples/blob/master/multichat/chat/consumers.py
 class PublicChatConsumer(AsyncJsonWebsocketConsumer):
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(args, kwargs)
+        self.room_id = None
+
     async def connect(self):
         """
         Called when the websocket is handshaking as part of initial connection.
@@ -236,11 +240,11 @@ class PublicChatConsumer(AsyncJsonWebsocketConsumer):
         Called when a ClientError is raised.
         Sends error data to UI.
         """
-        errorData = dict()
-        errorData['error'] = e.code
+        error_data = dict()
+        error_data['error'] = e.code
         if e.message:
-            errorData['message'] = e.message
-            await self.send_json(errorData)
+            error_data['message'] = e.message
+            await self.send_json(error_data)
 
 
 def is_authenticated(user):

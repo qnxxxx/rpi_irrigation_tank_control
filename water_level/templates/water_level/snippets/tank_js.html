@@ -1,3 +1,4 @@
+<!-- WATER TANK WIDGET -->
 <script type="text/javascript">
   let log = console.log.bind(console);
   console.clear();
@@ -223,8 +224,8 @@
 
       // sets the initial text and color to display based on fillValue
       setInitialValues() {
-        this.lookupTableValueEnabled = this.lookupTableValue !== null ? true : false;
-        this.changeRateValueEnabled = this.changeRateValue !== null ? true : false;
+        this.lookupTableValueEnabled = this.lookupTableValue !== null;
+        this.changeRateValueEnabled = this.changeRateValue !== null;
 
         this.fillColor = this.defaultFillColor;
 
@@ -1136,13 +1137,13 @@
   ];
 
   let options = {
-    fillValue: 50,
+    fillValue: 0,
     fillUnit: "%",
     supportLabelPadding: 5,
     frontFontColor: "#003B42",
     thresholds: thresholds,
-    lookupTableValue: 1700,
-    lookupTableValueUnit: 'l.',
+    lookupTableValue: 0,
+    lookupTableValueUnit: 'm³',
     lookupTableValueDecimal: 1,
     changeRateValueDecimal: 3,
     changeRateValueArrowEnabled: true,
@@ -1163,28 +1164,6 @@
   function getNow() {
     return Date().slice(16, 24);
   }
-
-  function getRandom() {
-    return Math.floor(Math.random() * 100);
-  }
-
-  // possible way to get value from db
-  let currentVal = 50;
-  tank.click(function () {
-    let newVal = getRandom();
-
-    if (newVal < currentVal) {
-      tank.updateArrow({direction: "down"});
-    } else if (newVal > currentVal) {
-      tank.updateArrow({direction: "up"});
-    } else {
-      tank.updateArrow({direction: "none"});
-    }
-
-    tank.updateHeight(newVal);
-    tank.updateLookupTableValue(parseInt(Math.random() * 1000));
-    currentVal = newVal;
-  });
 
   function setOneText() {
     tank.setSupportLabelText(getNow());
@@ -1213,4 +1192,89 @@
   function setDecimalTwo() {
     tank.setDecimal(2);
   }
+
+  // Correctly decide between ws:// and wss://
+  // let ws_scheme = window.location.protocol === "https:" ? "wss" : "ws";
+  let wl_ws_path;
+  {% if debug_mode %}
+    wl_ws_path = ws_scheme + '://' + window.location.host + "/wl/"; // development
+  {% else %}
+    wl_ws_path = ws_scheme + '://' + window.location.host + ":8001/public_chat/{{room_id}}/"; // production
+  {% endif %}
+
+  // console.log("Connecting to " + pcr_ws_path);
+  const water_level_socket = new WebSocket(wl_ws_path);
+
+  let water_level;
+  let volume_m3;
+  let volume_l;
+  let tank_fill;
+  let status;
+  let failsafe;
+  let timestamp;
+
+  // Handle incoming water level data
+  water_level_socket.onmessage = function (e) {
+    const data = JSON.parse(e.data);
+    console.log("Got water level websocket message " + data.status);
+
+    water_level = data.water_level;
+    volume_m3 = data.volume_m3;
+    volume_l = data.volume_l;
+    tank_fill = data.tank_fill;
+    status = data.status;
+    failsafe = data.failsafe;
+    timestamp = data.natural_timestamp;
+
+    // Handle getting water level reading
+    if (status !== 'Success!') {
+      document.querySelector('#test').innerText = status;
+    } else {
+      let failsafeStatus = (failsafe === true) ? "Failsafe is ENGAGED!" : "Failsafe is DISENGAGED!";
+      document.querySelector('#test').innerText = "Status as of " + timestamp + ": Water level is: " + water_level +
+        "cm., Water Volume is: " + volume_m3 + "m³ or " + volume_l + "l., Tank is full at: " + tank_fill +
+        "%, " + failsafeStatus;
+    }
+
+    console.log(tank_fill);
+
+
+    widgetUpdate(currentVal);
+
+  };
+
+  // update tank widget
+  let currentVal = tank_fill;
+
+  function widgetUpdate() {
+    let newVal = tank_fill;
+
+    if (newVal < currentVal) {
+      tank.updateArrow({direction: "down"});
+    } else if (newVal > currentVal) {
+      tank.updateArrow({direction: "up"});
+    } else {
+      tank.updateArrow({direction: "none"});
+    }
+
+    tank.updateHeight(newVal);
+    tank.updateLookupTableValue(parseInt(tank_fill));
+    currentVal = newVal;
+
+  }
+
+  water_level_socket.onclose = function (e) {
+    console.error('WL Socket closed.');
+  };
+
+  water_level_socket.onOpen = function (e) {
+    console.log("WL Socket onOpen", e);
+  };
+
+  water_level_socket.onerror = function (e) {
+    console.log('WL Socket error', e);
+  };
+
+
 </script>
+<!-- END TEST -->
