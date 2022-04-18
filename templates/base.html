@@ -94,19 +94,13 @@
 
 <!-- !!! Auto/Manual toggle script !!! -->
 <script type="text/javascript">
-  let modeToggleState = document.getElementById('mode-toggle').checked
-
-  if (modeToggleState === true) {
-    $('#pump-toggle').bootstrapToggle('disable');
-    $('#mains-toggle').bootstrapToggle('disable');
-    $('#byp-toggle').bootstrapToggle('disable');
-  }
-
-  $(function () {
-    $('#mode-toggle').change(function () {
-      modeToggleState = $(this).prop('checked');
-      // console.log(modeToggleState);
-      if (modeToggleState === false) {
+    $(function() {
+    $('#mode-toggle').change(function() {
+      if ($(this).prop('checked') === true) {
+        $('#pump-toggle').bootstrapToggle('disable');
+        $('#mains-toggle').bootstrapToggle('disable');
+        switchModeToggleAuto();
+      } else {
         $('#warningModal').modal({
           backdrop: 'static',
           keyboard: false
@@ -117,15 +111,80 @@
         $('#btn-yes').on('click', function () {
           $('#pump-toggle').bootstrapToggle('enable');
           $('#mains-toggle').bootstrapToggle('enable');
-          $('#byp-toggle').bootstrapToggle('enable');
+          switchModeToggleManual();
         });
-      } else {
-        $('#pump-toggle').bootstrapToggle('disable');
-        $('#mains-toggle').bootstrapToggle('disable');
-        $('#byp-toggle').bootstrapToggle('disable');
       }
-    });
-  });
+    })
+  })
+
+</script>
+
+<!-- SETUP SOCKET FOR MODE SWITCH -->
+<script type="text/javascript">
+  // Correctly decide between ws:// and wss://
+  // let ws_scheme = window.location.protocol === "https:" ? "wss" : "ws";
+  let mode_ws_path;
+  {% if debug_mode %}
+    mode_ws_path = ws_scheme + '://' + window.location.host + "/mode/"; // development
+  {% else %}
+    mode_ws_path = ws_scheme + '://' + window.location.host + ":8001/"; // production
+  {% endif %}
+
+  // console.log("Connecting to " + pcr_ws_path);
+  const mode_socket = new WebSocket(mode_ws_path);
+
+  let modeToggleState;
+
+  // Handle incoming water level data
+  mode_socket.onmessage = function (e) {
+    const data = JSON.parse(e.data);
+    console.log("Got work mode websocket message: " + data);
+
+    if (data === true) {
+      switchModeToggleAuto();
+     } else {
+      switchModeToggleManual();
+    }
+  };
+
+  function switchModeToggleAuto() {
+      $('#mode-toggle').prop('checked', true).change();
+      mode_socket.send(JSON.stringify({
+        "command": "auto"
+      }));
+  }
+
+  function switchModeToggleManual() {
+      $('#mode-toggle').prop('checked', false).change();
+      mode_socket.send(JSON.stringify({
+        "command": "manual"
+      }));
+  }
+
+  mode_socket.onclose = function (e) {
+    console.error('Mode Socket closed.');
+  };
+
+  mode_socket.onopen = function (e) {
+    console.log("Mode Socket onOpen", e);
+    getModeSwitchState();
+  };
+
+  mode_socket.onerror = function (e) {
+    console.log('Mode Socket error', e);
+  };
+
+  /*
+    Get the mode switch state
+  */
+  function getModeSwitchState() {
+    if ("{{request.user.is_authenticated}}") {
+      mode_socket.send(JSON.stringify({
+        "command": "get_mode"
+      }));
+    }
+  }
+
 </script>
 <!-- End SCRIPTS -->
 

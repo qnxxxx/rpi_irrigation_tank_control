@@ -4,14 +4,16 @@ import time
 import math
 
 import RPi.GPIO as GPIO
-from asgiref.sync import sync_to_async
 
+from django.utils import timezone
+
+from water_level.models import WaterLevel
+from helpers.get_tank_size import TANK_LENGTH, TANK_WIDTH, TANK_DEPTH, TANK_CAPACITY
+from helpers.timestamp import calculate_timestamp
 from helpers.get_sonar_settings import TRIGGER_PIN, ECHO_PIN, FAILSAFE_PIN
 from helpers.get_measurement_settings import SAMPLE_SIZE, SAMPLE_WAIT, TEMPERATURE
-from helpers.get_tank_size import TANK_DEPTH
 
 
-@sync_to_async
 class Measurement:
     """
     Create a measurement using a HC-SR04 Ultrasonic Sensor connected to
@@ -28,7 +30,7 @@ class Measurement:
         self.sonar_signal_on = 0
         self.sonar_signal_off = 0
 
-    async def distance(self, sample_size=SAMPLE_SIZE, sample_wait=SAMPLE_WAIT, temperature=TEMPERATURE):
+    def distance(self, sample_size=SAMPLE_SIZE, sample_wait=SAMPLE_WAIT, temperature=TEMPERATURE):
         """
         Return an error corrected rounded to the second decimal point
         distance, in cm, of an object adjusted for temperature in Celsius.
@@ -65,10 +67,10 @@ class Measurement:
                 else:
                     self.result['status'] = 'Error: Echo pulse not received! Check the sonar health!'
                     return self.result
-            # print(f'SONAR_SIGNAL_OFF: {self.sonar_signal_off}')
+
             while GPIO.input(self.echo_pin) == 1:
                 self.sonar_signal_on = time.time()
-            # print(f'SONAR_SIGNAL_ON: {self.sonar_signal_on}')
+
             time_passed = self.sonar_signal_on - self.sonar_signal_off
             distance_cm = time_passed * ((speed_of_sound * 100) / 2)
             sample.append(distance_cm)
@@ -79,9 +81,45 @@ class Measurement:
         # Determine failsafe status
         if not GPIO.input(self.failsafe_pin):
             self.result['failsafe'] = True
-            # print('button pressed')
+
         else:
             self.result['failsafe'] = False
-            # print('button depressed')
 
         return self.result
+
+    def take_measurement(self):
+        """
+        Called automatically on regular intervals
+        """
+        current_measurement = self.distance()
+
+        if current_measurement['status'] == 'Success!' and 10 <= current_measurement['water_level'] < TANK_DEPTH:
+            water_level = current_measurement['water_level']
+            volume_m3 = round((TANK_LENGTH * TANK_WIDTH * water_level) / 1000000, 2)
+            volume_l = round(volume_m3 * 1000)
+            tank_fill = round((volume_m3 * 100) / TANK_CAPACITY, 2)
+            current_measurement['volume_m3'] = volume_m3
+            current_measurement['volume_l'] = volume_l
+            current_measurement['tank_fill'] = tank_fill
+
+        elif current_measurement['water_level'] < 10 or current_measurement['water_level'] >= TANK_DEPTH:
+            current_measurement['status'] = 'Error: Inaccurate measurement!'
+
+        create_water_level_db_entry(**current_measurement)
+
+        timestamp = calculate_timestamp(timezone.localtime(timezone.now()))
+        current_measurement['natural_timestamp'] = timestamp
+
+        return current_measurement
+
+
+def create_water_level_db_entry(water_level, volume_m3, volume_l, tank_fill, status, failsafe):
+    print('DB ENTRY CREATED!')
+    return WaterLevel.objects.create(
+        water_level=water_level,
+        volume_m3=volume_m3,
+        volume_l=volume_l,
+        tank_fill=tank_fill,
+        status=status,
+        failsafe=failsafe
+    )

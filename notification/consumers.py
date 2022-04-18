@@ -42,7 +42,7 @@ class NotificationConsumer(AsyncJsonWebsocketConsumer):
         for us and pass it as the first argument.
         """
         command = content.get('command', None)
-        print('NotificationConsumer: receive_json. Command: ' + command)
+        # print('NotificationConsumer: receive_json. Command: ' + command)
         try:
             if command == 'get_general_notifications':
                 payload = await get_general_notifications(self.scope['user'], content.get('page_number', None))

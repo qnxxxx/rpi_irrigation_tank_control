@@ -7,7 +7,7 @@ Features:
   4. Control panel with realtime pumps/valves relay control and feedback.
   5. Authentication system defining user roles (viewers, operators and administrators).
   6. Chat system for communication between users.
-  7. Notifications system for the chat.
+  7. Notification system.
   8. Alarm system for critical water levels (high/low), sensor malfunctions, failsafe events.
   9. RPi pin settings, Measurement settings and Tank size are editable through the admin panel.
   10. !!! PERHAPS ONE DAY... !!! Android app or HASS.IO integration. Maybe both...?!?
@@ -26,7 +26,7 @@ Software:
     Kernel version: 5.10
     Debian version: 11 (bullseye)
 
-  2. Django + Channels
+  2. Django + Channels + Celery
   3. Nginx
   4. Postgresql
   5. Gunicorn
@@ -35,4 +35,4 @@ Software:
 
 Chat system adapted from here: https://github.com/mitchtabian/Codingwithmitch-Chat
 
-Current State ~45% Ready.
+Current State ~50% Ready.

@@ -261,8 +261,8 @@
   // Handle incoming messages
   notificationSocket.onmessage = function (message) {
     let data = JSON.parse(message.data);
-    console.log("Got notification websocket message. " + data.general_msg_type);
-    console.log("Got notification websocket message. " + data.chat_msg_type);
+    //console.log("Got notification websocket message. " + data.general_msg_type);
+    //console.log("Got notification websocket message. " + data.chat_msg_type);
 
     /*
       GENERAL NOTIFICATIONS
@@ -319,7 +319,7 @@
   };
 
   notificationSocket.onopen = function (e) {
-    console.log("Notification Socket on open: " + e)
+    console.log("Notification Socket onOpen: " + e)
     setupGeneralNotificationsMenu()
     getFirstGeneralNotificationsPage()
     getUnreadGeneralNotificationsCount()

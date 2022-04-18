@@ -9,9 +9,7 @@ def read_relay_board_settings():
 
 relay_board_pins = read_relay_board_settings()
 
-# Trigger and echo GPIO pins for sonar
+# Relay board GPIO pins
 PUMP_PIN = relay_board_pins[0]
 MAINS_PIN = relay_board_pins[1]
-
-# Failsafe button (overflow) GPIO pin
 BYP_PIN = relay_board_pins[2]

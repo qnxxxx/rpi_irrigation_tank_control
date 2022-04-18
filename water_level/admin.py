@@ -1,11 +1,10 @@
 from django.contrib import admin
 from helpers.caching_paginator import CachingPaginator
 
-from water_level.models import SonarPinout, SampleMeasurement, TankSize, WaterLevel, MeasurementsInterval
+from water_level.models import SonarPinout, SampleMeasurement, TankSize, WaterLevel
+
 
 # Register your models here.
-
-
 class SampleMeasurementAdmin(admin.ModelAdmin):
     list_display = ['id', 'title', 'sample_size', 'sample_wait', 'temperature']
     readonly_fields = ['id']
@@ -52,14 +51,3 @@ class WaterLevelAdmin(admin.ModelAdmin):
 
 
 admin.site.register(WaterLevel, WaterLevelAdmin)
-
-
-class MeasurementsIntervalAdmin(admin.ModelAdmin):
-    list_display = ['id', 'title', 'interval']
-    readonly_fields = ['id']
-
-    class Meta:
-        model = MeasurementsInterval
-
-
-admin.site.register(MeasurementsInterval, MeasurementsIntervalAdmin)

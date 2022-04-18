@@ -27,28 +27,175 @@
       <label for="byp-toggle">BYP</label>
     </div>
   </div>
-  <br>
-  <button type="button" class="btn btn-outline-primary" onclick="test_mains()">MAINS TEST</button>
 </div>
 
 
-<!-- TESTING DISABLED VIEW INDICATION - WORKING !!! -->
+<!-- TEST -->
 <script type="text/javascript">
-  function test_mains() {
-    let mainsToggleState = document.getElementById("mains-toggle").checked
 
-    if (mainsToggleState === true && modeToggleState === false) {
-      $('#mains-toggle').bootstrapToggle('off');
-    } else if (mainsToggleState === false && modeToggleState === true) {
-      $('#mains-toggle').bootstrapToggle('enable');
-      $('#mains-toggle').bootstrapToggle('on');
-      $('#mains-toggle').bootstrapToggle('disable');
-    } else if (mainsToggleState === false && modeToggleState === false) {
-      $('#mains-toggle').bootstrapToggle('on');
-    } else {
-      $('#mains-toggle').bootstrapToggle('enable');
-      $('#mains-toggle').bootstrapToggle('off');
-      $('#mains-toggle').bootstrapToggle('disable');
+</script>
+
+<!-- RELAY BOARD WEBSOCKET SCRIPT -->
+<script type="text/javascript">
+  const REFRESH_INTERVAL = 500
+  // Correctly decide between ws:// and wss://
+  // let ws_scheme = window.location.protocol === "https:" ? "wss" : "ws";
+  let rb_ws_path;
+  {% if debug_mode %}
+    rb_ws_path = ws_scheme + '://' + window.location.host + "/rb/"; // development
+  {% else %}
+    rb_ws_path = ws_scheme + '://' + window.location.host + ":8001/public_chat/{{room_id}}/"; // production
+  {% endif %}
+
+  // console.log("Connecting to " + pcr_ws_path);
+  const relay_board_socket = new WebSocket(rb_ws_path);
+
+  // Handle incoming water level data
+  relay_board_socket.onmessage = function (e) {
+    const data = JSON.parse(e.data);
+    console.log("Got relay board websocket message: " + data.switch + " : " + data.state);
+
+    let toggleSwitch = data.switch;
+    let toggleState = data.state;
+
+    if (toggleSwitch === "pump") {
+      if (toggleState === true) {
+        switchPumpToggleOn();
+        console.log("PUMP switched ON");
+      } else {
+        switchPumpToggleOff();
+        console.log("PUMP switched OFF");
+      }
+    }
+
+    if (toggleSwitch === 'mains') {
+      if (toggleState === true) {
+        switchMainsToggleOn();
+        console.log("MAINS switched ON");
+      } else {
+        switchMainsToggleOff();
+        console.log("MAINS switched OFF");
+      }
+    }
+
+    if (toggleSwitch === 'byp') {
+      if (toggleState === true) {
+        switchBypToggleOn();
+        console.log("BYPASS switched ON");
+      } else {
+        switchBypToggleOff();
+        console.log("BYPASS switched OFF");
+      }
     }
   }
+
+  // PUMP OPERATION //
+  function switchPumpToggleOn() {
+    if ("{{request.user.is_authenticated}}") {
+      $('#pump-toggle').prop('checked', true).change();
+      console.log("TURN PUMP ON");
+      relay_board_socket.send(JSON.stringify({
+        "command": "turn_on",
+        "switch": "pump"
+      }));
+    }
+  }
+
+  function switchPumpToggleOff() {
+    if ("{{request.user.is_authenticated}}") {
+      $('#pump-toggle').prop('checked', false).change();
+      console.log("TURN PUMP OFF");
+      relay_board_socket.send(JSON.stringify({
+        "command": "turn_off",
+        "switch": "pump"
+      }));
+    }
+  }
+
+  // MAINS OPERATION //
+  function switchMainsToggleOn() {
+    if ("{{request.user.is_authenticated}}") {
+      $('#mains-toggle').prop('checked', true).change();
+      console.log("TURN MAINS ON");
+      relay_board_socket.send(JSON.stringify({
+        "command": "turn_on",
+        "switch": "mains"
+      }));
+    }
+  }
+
+  function switchMainsToggleOff() {
+    $('#mains-toggle').prop('checked', false).change();
+    console.log("TURN MAINS OFF");
+    relay_board_socket.send(JSON.stringify({
+      "command": "turn_off",
+      "switch": "mains"
+    }));
+  }
+
+  // BYPASS OPERATION //
+  function switchBypToggleOn() {
+    $('#byp-toggle').prop('checked', true).change();
+    console.log("TURN BYPASS ON");
+    relay_board_socket.send(JSON.stringify({
+      "command": "turn_on",
+      "switch": "bypass"
+    }));
+  }
+
+  function switchBypToggleOff() {
+    $('#byp-toggle').prop('checked', false).change();
+    console.log("TURN BYPASS OFF");
+    relay_board_socket.send(JSON.stringify({
+      "command": "turn_off",
+      "switch": "bypass"
+    }));
+  }
+
+  relay_board_socket.onclose = function (e) {
+    console.error('RB Socket closed.');
+  };
+
+  relay_board_socket.onopen = function (e) {
+    console.log("RB Socket onOpen", e);
+    getRelayBoardStatus();
+  };
+
+  relay_board_socket.onerror = function (e) {
+    console.log('RB Socket error', e);
+  };
+
+  /*
+    Refresh the relay control board status
+  */
+  function getRelayBoardStatus() {
+    if ("{{request.user.is_authenticated}}") {
+      relay_board_socket.send(JSON.stringify({
+        "command": "get_relay_board_status"
+      }));
+    }
+  }
+</script>
+
+<script type="text/javascript">
+  $(function() {
+    $('#pump-toggle').change(function() {
+    })
+  })
+
+  $(function() {
+    $('#mains-toggle').change(function() {
+    })
+  })
+
+  $(function() {
+    $('#byp-toggle').change(function() {
+      if ($(this).prop('checked') === true) {
+        console.log("on");
+      } else {
+        console.log("off");
+      }
+    })
+  })
+
 </script>

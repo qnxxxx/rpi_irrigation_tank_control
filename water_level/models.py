@@ -100,27 +100,5 @@ class WaterLevel(models.Model):
     objects = WaterLevelManager()
 
     def __str__(self):
-        return self.water_level
-
-
-class MeasurementsIntervalManager(models.Manager):  # query set
-    @staticmethod
-    def query_all():
-        qs = MeasurementsInterval.objects
-        return qs
-
-
-class MeasurementsInterval(models.Model):
-    """
-    Settings for the time interval between measurements in seconds
-    """
-    title = models.CharField(max_length=255, unique=True, blank=False, default='Measurements Interval')
-    interval = models.IntegerField(default=10, verbose_name='Measurement Interval (seconds)')
-
-    objects = MeasurementsIntervalManager()
-
-    def __str__(self):
-        return self.title
-
-    class Meta:
-        verbose_name_plural = 'Measurements interval'
+        return f'{self.timestamp}, {self.water_level}, {self.volume_m3}, {self.volume_l}, {self.tank_fill}, ' \
+               f'{self.failsafe}, {self.status}'

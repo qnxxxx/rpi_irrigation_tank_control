@@ -1148,7 +1148,7 @@
     changeRateValueDecimal: 3,
     changeRateValueArrowEnabled: true,
     changeRateValue: 0.3,
-    changeRateValueUnit: 'gal/min'
+    changeRateValueUnit: 'l/min'
   }
 
   let tank = $('.tank-gauge').analogTank(options);
@@ -1163,14 +1163,6 @@
 
   function getNow() {
     return Date().slice(16, 24);
-  }
-
-  function setOneText() {
-    tank.setSupportLabelText(getNow());
-  }
-
-  function setTwoText() {
-    tank.setSupportLabelText(getNow(), "bottom label");
   }
 
   function addArrow() {
@@ -1228,15 +1220,16 @@
 
     // Handle getting water level reading
     if (status !== 'Success!') {
-      document.querySelector('#test').innerText = status;
+      document.querySelector('#status').innerText = status;
     } else {
       let failsafeStatus = (failsafe === true) ? "Failsafe is ENGAGED!" : "Failsafe is DISENGAGED!";
-      document.querySelector('#test').innerText = "Status as of " + timestamp + ": Water level is: " + water_level +
+
+      document.querySelector('#status').innerText = "Status as of " + timestamp + ": Water level is: " + water_level +
         "cm., Water Volume is: " + volume_m3 + "m³ or " + volume_l + "l., Tank is full at: " + tank_fill +
         "%, " + failsafeStatus;
     }
 
-    console.log(tank_fill);
+    console.log(status);
 
 
     widgetUpdate(currentVal);
@@ -1259,6 +1252,7 @@
 
     tank.updateHeight(newVal);
     tank.updateLookupTableValue(parseInt(tank_fill));
+    tank.setSupportLabelText(getNow(), status);
     currentVal = newVal;
 
   }
@@ -1267,14 +1261,13 @@
     console.error('WL Socket closed.');
   };
 
-  water_level_socket.onOpen = function (e) {
+  water_level_socket.onopen = function (e) {
     console.log("WL Socket onOpen", e);
   };
 
   water_level_socket.onerror = function (e) {
     console.log('WL Socket error', e);
   };
-
 
 </script>
 <!-- END TEST -->
